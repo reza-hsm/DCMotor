@@ -1,0 +1,311 @@
+
+DCMotorSpeedContorl.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000178  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000002  00800060  00000178  000001ec  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .comment      00000030  00000000  00000000  000001ee  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000220  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000038  00000000  00000000  0000025c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   000007f1  00000000  00000000  00000294  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 000005de  00000000  00000000  00000a85  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   000003c8  00000000  00000000  00001063  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000054  00000000  00000000  0000142c  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    00000355  00000000  00000000  00001480  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    00000197  00000000  00000000  000017d5  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000028  00000000  00000000  0000196c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+   8:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+   c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  10:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  14:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  18:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  1c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  20:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  24:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  28:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  2c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  30:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  34:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  38:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  3c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  40:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  44:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  48:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  4c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  50:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+
+00000060 <__do_copy_data>:
+  60:	10 e0       	ldi	r17, 0x00	; 0
+  62:	a0 e6       	ldi	r26, 0x60	; 96
+  64:	b0 e0       	ldi	r27, 0x00	; 0
+  66:	e8 e7       	ldi	r30, 0x78	; 120
+  68:	f1 e0       	ldi	r31, 0x01	; 1
+  6a:	02 c0       	rjmp	.+4      	; 0x70 <__do_copy_data+0x10>
+  6c:	05 90       	lpm	r0, Z+
+  6e:	0d 92       	st	X+, r0
+  70:	a2 36       	cpi	r26, 0x62	; 98
+  72:	b1 07       	cpc	r27, r17
+  74:	d9 f7       	brne	.-10     	; 0x6c <__do_copy_data+0xc>
+  76:	0e 94 52 00 	call	0xa4	; 0xa4 <main>
+  7a:	0c 94 ba 00 	jmp	0x174	; 0x174 <_exit>
+
+0000007e <__bad_interrupt>:
+  7e:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+00000082 <setPWM>:
+	ASSR = 0x00;  // set external clock off(for timer2)
+	TCCR2 = 0x69; // Prescaler : 1 , FastMode PWM , Non-Inverting Mode ,pwm freq : 62.5 KHz
+	TCNT2 = 0x00; // Initial value of timer/counter2 
+}
+void PWMWrite(uint8_t value){
+	OCR2 = value;
+  82:	12 bc       	out	0x22, r1	; 34
+  84:	89 e6       	ldi	r24, 0x69	; 105
+  86:	85 bd       	out	0x25, r24	; 37
+  88:	14 bc       	out	0x24, r1	; 36
+  8a:	08 95       	ret
+
+0000008c <setPins>:
+}
+void setPins(){
+	DDRD |= 1<<1;		//set PD1 as output (DDRD1 : 1)
+  8c:	89 9a       	sbi	0x11, 1	; 17
+	DDRD |= 1<<2;		//set PD2 as output (DDRD2 : 1)
+  8e:	8a 9a       	sbi	0x11, 2	; 17
+	DDRD &= ~(1<<3);	//set PD3 as input (DDRD3 : 0)
+  90:	8b 98       	cbi	0x11, 3	; 17
+	DDRD &= ~(1<<4);	//set PD4 as input (DDRD4 : 0)
+  92:	8c 98       	cbi	0x11, 4	; 17
+	DDRD &= ~(1<<5);	//set PD5 as input (DDRD5 : 0)
+  94:	8d 98       	cbi	0x11, 5	; 17
+	DDRD |= 1<<7;		//set PD7(OC2) as output (DDRD7 : 1)
+  96:	8f 9a       	sbi	0x11, 7	; 17
+	PORTD |= 1<<3;		//pull up PD3
+  98:	93 9a       	sbi	0x12, 3	; 18
+	PORTD |= 1<<4;		//pull up PD4 
+  9a:	94 9a       	sbi	0x12, 4	; 18
+	PORTD |= 1<<5;		//pull up PD5 
+  9c:	95 9a       	sbi	0x12, 5	; 18
+	PORTD |= 1<<2;		//set PD2 1 
+  9e:	92 9a       	sbi	0x12, 2	; 18
+	PORTD &= ~(1<<1);	//set PD1 0
+  a0:	91 98       	cbi	0x12, 1	; 18
+  a2:	08 95       	ret
+
+000000a4 <main>:
+void PWMWrite(uint8_t value);
+void setPins();
+uint8_t pwmValue = 70;
+int main(void)
+{
+	setPins();
+  a4:	0e 94 46 00 	call	0x8c	; 0x8c <setPins>
+	setPWM();
+  a8:	0e 94 41 00 	call	0x82	; 0x82 <setPWM>
+	PWMWrite(pwmValue);
+  ac:	80 91 60 00 	lds	r24, 0x0060	; 0x800060 <__data_start>
+	ASSR = 0x00;  // set external clock off(for timer2)
+	TCCR2 = 0x69; // Prescaler : 1 , FastMode PWM , Non-Inverting Mode ,pwm freq : 62.5 KHz
+	TCNT2 = 0x00; // Initial value of timer/counter2 
+}
+void PWMWrite(uint8_t value){
+	OCR2 = value;
+  b0:	83 bd       	out	0x23, r24	; 35
+			while(increaseButtonPressed);
+			_delay_ms(50);
+			if(pwmValue <= 249)
+				pwmValue += 5;
+			else 
+				pwmValue = 250;
+  b2:	3a ef       	ldi	r19, 0xFA	; 250
+			while(decreaseButtonPressed);
+			_delay_ms(50);
+			if(pwmValue >= 70)
+				pwmValue -= 5;
+			else
+				pwmValue = 70;
+  b4:	46 e4       	ldi	r20, 0x46	; 70
+		}
+		if(increaseButtonNotPressed && decreaseButtonNotPressed && directionButtonPressed){
+			_delay_ms(50);
+			while(directionButtonPressed);
+			_delay_ms(50);
+			PORTD ^= 1<<1; //toggle PD1
+  b6:	22 e0       	ldi	r18, 0x02	; 2
+			PORTD ^= 1<<2; //toggle PD2
+  b8:	94 e0       	ldi	r25, 0x04	; 4
+	setPins();
+	setPWM();
+	PWMWrite(pwmValue);
+	
+	while (1) {
+		if(increaseButtonPressed && decreaseButtonNotPressed && directionButtonNotPressed){
+  ba:	83 99       	sbic	0x10, 3	; 16
+  bc:	1f c0       	rjmp	.+62     	; 0xfc <main+0x58>
+  be:	84 9b       	sbis	0x10, 4	; 16
+  c0:	1d c0       	rjmp	.+58     	; 0xfc <main+0x58>
+  c2:	85 9b       	sbis	0x10, 5	; 16
+  c4:	1b c0       	rjmp	.+54     	; 0xfc <main+0x58>
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  c6:	e3 ed       	ldi	r30, 0xD3	; 211
+  c8:	f0 e3       	ldi	r31, 0x30	; 48
+  ca:	31 97       	sbiw	r30, 0x01	; 1
+  cc:	f1 f7       	brne	.-4      	; 0xca <main+0x26>
+  ce:	00 c0       	rjmp	.+0      	; 0xd0 <main+0x2c>
+  d0:	00 00       	nop
+			_delay_ms(50);
+			while(increaseButtonPressed);
+  d2:	83 9b       	sbis	0x10, 3	; 16
+  d4:	fe cf       	rjmp	.-4      	; 0xd2 <main+0x2e>
+  d6:	e3 ed       	ldi	r30, 0xD3	; 211
+  d8:	f0 e3       	ldi	r31, 0x30	; 48
+  da:	31 97       	sbiw	r30, 0x01	; 1
+  dc:	f1 f7       	brne	.-4      	; 0xda <main+0x36>
+  de:	00 c0       	rjmp	.+0      	; 0xe0 <main+0x3c>
+  e0:	00 00       	nop
+			_delay_ms(50);
+			if(pwmValue <= 249)
+  e2:	80 91 60 00 	lds	r24, 0x0060	; 0x800060 <__data_start>
+  e6:	8a 3f       	cpi	r24, 0xFA	; 250
+  e8:	20 f4       	brcc	.+8      	; 0xf2 <main+0x4e>
+				pwmValue += 5;
+  ea:	8b 5f       	subi	r24, 0xFB	; 251
+  ec:	80 93 60 00 	sts	0x0060, r24	; 0x800060 <__data_start>
+  f0:	02 c0       	rjmp	.+4      	; 0xf6 <main+0x52>
+			else 
+				pwmValue = 250;
+  f2:	30 93 60 00 	sts	0x0060, r19	; 0x800060 <__data_start>
+			PWMWrite(pwmValue);
+  f6:	80 91 60 00 	lds	r24, 0x0060	; 0x800060 <__data_start>
+	ASSR = 0x00;  // set external clock off(for timer2)
+	TCCR2 = 0x69; // Prescaler : 1 , FastMode PWM , Non-Inverting Mode ,pwm freq : 62.5 KHz
+	TCNT2 = 0x00; // Initial value of timer/counter2 
+}
+void PWMWrite(uint8_t value){
+	OCR2 = value;
+  fa:	83 bd       	out	0x23, r24	; 35
+				pwmValue += 5;
+			else 
+				pwmValue = 250;
+			PWMWrite(pwmValue);
+		}
+		if(increaseButtonNotPressed && decreaseButtonPressed && directionButtonNotPressed){
+  fc:	83 9b       	sbis	0x10, 3	; 16
+  fe:	1f c0       	rjmp	.+62     	; 0x13e <main+0x9a>
+ 100:	84 99       	sbic	0x10, 4	; 16
+ 102:	1d c0       	rjmp	.+58     	; 0x13e <main+0x9a>
+ 104:	85 9b       	sbis	0x10, 5	; 16
+ 106:	1b c0       	rjmp	.+54     	; 0x13e <main+0x9a>
+ 108:	e3 ed       	ldi	r30, 0xD3	; 211
+ 10a:	f0 e3       	ldi	r31, 0x30	; 48
+ 10c:	31 97       	sbiw	r30, 0x01	; 1
+ 10e:	f1 f7       	brne	.-4      	; 0x10c <main+0x68>
+ 110:	00 c0       	rjmp	.+0      	; 0x112 <main+0x6e>
+ 112:	00 00       	nop
+			_delay_ms(50);
+			while(decreaseButtonPressed);
+ 114:	84 9b       	sbis	0x10, 4	; 16
+ 116:	fe cf       	rjmp	.-4      	; 0x114 <main+0x70>
+ 118:	e3 ed       	ldi	r30, 0xD3	; 211
+ 11a:	f0 e3       	ldi	r31, 0x30	; 48
+ 11c:	31 97       	sbiw	r30, 0x01	; 1
+ 11e:	f1 f7       	brne	.-4      	; 0x11c <main+0x78>
+ 120:	00 c0       	rjmp	.+0      	; 0x122 <main+0x7e>
+ 122:	00 00       	nop
+			_delay_ms(50);
+			if(pwmValue >= 70)
+ 124:	80 91 60 00 	lds	r24, 0x0060	; 0x800060 <__data_start>
+ 128:	86 34       	cpi	r24, 0x46	; 70
+ 12a:	20 f0       	brcs	.+8      	; 0x134 <main+0x90>
+				pwmValue -= 5;
+ 12c:	85 50       	subi	r24, 0x05	; 5
+ 12e:	80 93 60 00 	sts	0x0060, r24	; 0x800060 <__data_start>
+ 132:	02 c0       	rjmp	.+4      	; 0x138 <main+0x94>
+			else
+				pwmValue = 70;
+ 134:	40 93 60 00 	sts	0x0060, r20	; 0x800060 <__data_start>
+			PWMWrite(pwmValue);
+ 138:	80 91 60 00 	lds	r24, 0x0060	; 0x800060 <__data_start>
+	ASSR = 0x00;  // set external clock off(for timer2)
+	TCCR2 = 0x69; // Prescaler : 1 , FastMode PWM , Non-Inverting Mode ,pwm freq : 62.5 KHz
+	TCNT2 = 0x00; // Initial value of timer/counter2 
+}
+void PWMWrite(uint8_t value){
+	OCR2 = value;
+ 13c:	83 bd       	out	0x23, r24	; 35
+				pwmValue -= 5;
+			else
+				pwmValue = 70;
+			PWMWrite(pwmValue);
+		}
+		if(increaseButtonNotPressed && decreaseButtonNotPressed && directionButtonPressed){
+ 13e:	83 9b       	sbis	0x10, 3	; 16
+ 140:	bc cf       	rjmp	.-136    	; 0xba <main+0x16>
+ 142:	84 9b       	sbis	0x10, 4	; 16
+ 144:	ba cf       	rjmp	.-140    	; 0xba <main+0x16>
+ 146:	85 99       	sbic	0x10, 5	; 16
+ 148:	b8 cf       	rjmp	.-144    	; 0xba <main+0x16>
+ 14a:	e3 ed       	ldi	r30, 0xD3	; 211
+ 14c:	f0 e3       	ldi	r31, 0x30	; 48
+ 14e:	31 97       	sbiw	r30, 0x01	; 1
+ 150:	f1 f7       	brne	.-4      	; 0x14e <main+0xaa>
+ 152:	00 c0       	rjmp	.+0      	; 0x154 <main+0xb0>
+ 154:	00 00       	nop
+			_delay_ms(50);
+			while(directionButtonPressed);
+ 156:	85 9b       	sbis	0x10, 5	; 16
+ 158:	fe cf       	rjmp	.-4      	; 0x156 <main+0xb2>
+ 15a:	e3 ed       	ldi	r30, 0xD3	; 211
+ 15c:	f0 e3       	ldi	r31, 0x30	; 48
+ 15e:	31 97       	sbiw	r30, 0x01	; 1
+ 160:	f1 f7       	brne	.-4      	; 0x15e <main+0xba>
+ 162:	00 c0       	rjmp	.+0      	; 0x164 <main+0xc0>
+ 164:	00 00       	nop
+			_delay_ms(50);
+			PORTD ^= 1<<1; //toggle PD1
+ 166:	82 b3       	in	r24, 0x12	; 18
+ 168:	82 27       	eor	r24, r18
+ 16a:	82 bb       	out	0x12, r24	; 18
+			PORTD ^= 1<<2; //toggle PD2
+ 16c:	82 b3       	in	r24, 0x12	; 18
+ 16e:	89 27       	eor	r24, r25
+ 170:	82 bb       	out	0x12, r24	; 18
+ 172:	a3 cf       	rjmp	.-186    	; 0xba <main+0x16>
+
+00000174 <_exit>:
+ 174:	f8 94       	cli
+
+00000176 <__stop_program>:
+ 176:	ff cf       	rjmp	.-2      	; 0x176 <__stop_program>
